@@ -39,10 +39,10 @@ void loop() {
     moveForward();
   } else if (leftSensorValue == HIGH && rightSensorValue == LOW) {
     // Left sensor off the line - turn left
-    turnLeft();
+    turnRight();
   } else if (leftSensorValue == LOW && rightSensorValue == HIGH) {
     // Right sensor off the line - turn right
-    turnRight();
+    turnLeft();
   } else {
     // Lost the line - stop
     stopMotors();
@@ -50,33 +50,33 @@ void loop() {
 }
 
 void moveForward() {
-  digitalWrite(IN1, HIGH);
-  digitalWrite(IN2, LOW);
-  analogWrite(ENA, 80); 
-
-  digitalWrite(IN3, HIGH);
-  digitalWrite(IN4, LOW);
-  analogWrite(ENB, 80); 
-}
-
-void turnLeft() {
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, HIGH);
-  analogWrite(ENA, 20); 
+  analogWrite(ENA, 60); 
 
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, LOW);
   analogWrite(ENB, 60); 
 }
 
-void turnRight() {
-  digitalWrite(IN1, HIGH);
+void turnLeft() {
+  digitalWrite(IN1, LOW);
   digitalWrite(IN2, LOW);
-  analogWrite(ENA, 60); 
+  analogWrite(ENA, 0); 
+
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+  analogWrite(ENB, 40); 
+}
+
+void turnRight() {
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+  analogWrite(ENA, 40); 
 
   digitalWrite(IN3, LOW);
-  digitalWrite(IN4, HIGH);
-  analogWrite(ENB, 20); 
+  digitalWrite(IN4, LOW);
+  analogWrite(ENB, 0); 
 }
 
 void stopMotors() {
