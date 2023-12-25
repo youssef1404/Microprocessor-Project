@@ -133,6 +133,7 @@ line level    source
  119          
  120          void setTimer() {
  121   1          TMOD = 0x01;
+                  TR0 = 1;
  122   1          if(motor1newSpeed > 1)
  123   1          {
  124   2            TH0 = (ON_Period >> 8);
