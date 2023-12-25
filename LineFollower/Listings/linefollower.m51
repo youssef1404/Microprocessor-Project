@@ -1,9 +1,9 @@
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    12/21/2023  00:47:27  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    12/25/2023  03:44:26  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
-O:\01. PROGRAMS\KEIL\C51\BIN\BL51.EXE .\Objects\STARTUP.obj, .\Objects\main.obj TO .\Objects\linefollower PRINT (.\Listi
->> ngs\linefollower.m51) RAMSIZE (256)
+O:\01. PROGRAMS\KEIL\C51\BIN\BL51.EXE .\Objects\STARTUP.obj, .\Objects\main.obj TO .\Objects\LineFollower PRINT (.\Listi
+>> ngs\LineFollower.m51) RAMSIZE (256)
 
 
 MEMORY MODEL: SMALL WITH FLOATING POINT ARITHMETIC
@@ -21,7 +21,7 @@ INPUT MODULES INCLUDED:
   O:\01. PROGRAMS\KEIL\C51\LIB\C51S.LIB (?C?LNEG)
 
 
-LINK MAP OF MODULE:  .\Objects\linefollower (?C_STARTUP)
+LINK MAP OF MODULE:  .\Objects\LineFollower (?C_STARTUP)
 
 
             TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
@@ -29,25 +29,28 @@ LINK MAP OF MODULE:  .\Objects\linefollower (?C_STARTUP)
 
             * * * * * * *   D A T A   M E M O R Y   * * * * * * *
             REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
-            DATA    0008H     0032H     UNIT         ?DT?MAIN
-            IDATA   003AH     0001H     UNIT         ?STACK
+            DATA    0008H     003CH     UNIT         ?DT?MAIN
+            IDATA   0044H     0001H     UNIT         ?STACK
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
             CODE    0000H     0003H     ABSOLUTE     
                     0003H     07FDH                  *** GAP ***
             CODE    0800H     02CBH     UNIT         ?C?LIB_CODE
             CODE    0ACBH     00B5H     UNIT         ?PR?CALCULATEERROR?MAIN
-            CODE    0B80H     0093H     UNIT         ?PR?PIDCALCULATIONS?MAIN
-            CODE    0C13H     008CH     UNIT         ?C_C51STARTUP
-            CODE    0C9FH     0083H     UNIT         ?PR?CHANGEMOTORSPEED?MAIN
-            CODE    0D22H     0020H     UNIT         ?PR?_DELAY?MAIN
-            CODE    0D42H     001CH     UNIT         ?PR?READIRSENSORS?MAIN
-            CODE    0D5EH     001BH     UNIT         ?C_INITSEG
-            CODE    0D79H     0015H     UNIT         ?PR?MAIN?MAIN
+            CODE    0B80H     0095H     UNIT         ?PR?PIDCALCULATIONS?MAIN
+            CODE    0C15H     008CH     UNIT         ?C_C51STARTUP
+            CODE    0CA1H     0079H     UNIT         ?PR?CHANGEMOTORSPEED?MAIN
+            CODE    0D1AH     0039H     UNIT         ?PR?SETTIMER?MAIN
+            CODE    0D53H     0020H     UNIT         ?PR?_DELAY?MAIN
+            CODE    0D73H     001EH     UNIT         ?PR?_SETPWM1?MAIN
+            CODE    0D91H     001EH     UNIT         ?PR?_SETPWM2?MAIN
+            CODE    0DAFH     001CH     UNIT         ?PR?READIRSENSORS?MAIN
+            CODE    0DCBH     001BH     UNIT         ?C_INITSEG
+            CODE    0DE6H     0015H     UNIT         ?PR?MAIN?MAIN
 
 
 
-OVERLAY MAP OF MODULE:   .\Objects\linefollower (?C_STARTUP)
+OVERLAY MAP OF MODULE:   .\Objects\LineFollower (?C_STARTUP)
 
 
 SEGMENT
@@ -56,27 +59,31 @@ SEGMENT
 ?C_C51STARTUP
   +--> ?PR?MAIN?MAIN
   +--> ?C_INITSEG
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  12/25/2023  03:44:26  PAGE 2
+
+
 
 ?PR?MAIN?MAIN
   +--> ?PR?READIRSENSORS?MAIN
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  12/21/2023  00:47:27  PAGE 2
-
-
   +--> ?PR?CALCULATEERROR?MAIN
   +--> ?PR?PIDCALCULATIONS?MAIN
   +--> ?PR?CHANGEMOTORSPEED?MAIN
   +--> ?PR?_DELAY?MAIN
 
+?PR?CHANGEMOTORSPEED?MAIN
+  +--> ?PR?_SETPWM1?MAIN
+  +--> ?PR?_SETPWM2?MAIN
 
 
-SYMBOL TABLE OF MODULE:  .\Objects\linefollower (?C_STARTUP)
+
+SYMBOL TABLE OF MODULE:  .\Objects\LineFollower (?C_STARTUP)
 
   VALUE           TYPE          NAME
   ----------------------------------
 
   -------         MODULE        ?C_STARTUP
-  C:0C13H         SEGMENT       ?C_C51STARTUP
-  I:003AH         SEGMENT       ?STACK
+  C:0C15H         SEGMENT       ?C_C51STARTUP
+  I:0044H         SEGMENT       ?STACK
   C:0000H         PUBLIC        ?C_STARTUP
   D:00E0H         SYMBOL        ACC
   D:00F0H         SYMBOL        B
@@ -85,7 +92,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\linefollower (?C_STARTUP)
   N:0000H         SYMBOL        IBPSTACK
   N:0100H         SYMBOL        IBPSTACKTOP
   N:0080H         SYMBOL        IDATALEN
-  C:0C16H         SYMBOL        IDATALOOP
+  C:0C18H         SYMBOL        IDATALOOP
   N:0000H         SYMBOL        PBPSTACK
   N:0100H         SYMBOL        PBPSTACKTOP
   N:0000H         SYMBOL        PDATALEN
@@ -94,137 +101,188 @@ SYMBOL TABLE OF MODULE:  .\Objects\linefollower (?C_STARTUP)
   N:0000H         SYMBOL        PPAGEENABLE
   D:00A0H         SYMBOL        PPAGE_SFR
   D:0081H         SYMBOL        SP
-  C:0C13H         SYMBOL        STARTUP1
+  C:0C15H         SYMBOL        STARTUP1
   N:0000H         SYMBOL        XBPSTACK
   N:0000H         SYMBOL        XBPSTACKTOP
   N:0000H         SYMBOL        XDATALEN
   N:0000H         SYMBOL        XDATASTART
   C:0000H         LINE#         126
-  C:0C13H         LINE#         133
-  C:0C15H         LINE#         134
-  C:0C16H         LINE#         135
-  C:0C17H         LINE#         136
-  C:0C19H         LINE#         185
-  C:0C1CH         LINE#         196
+  C:0C15H         LINE#         133
+  C:0C17H         LINE#         134
+  C:0C18H         LINE#         135
+  C:0C19H         LINE#         136
+  C:0C1BH         LINE#         185
+  C:0C1EH         LINE#         196
   -------         ENDMOD        ?C_STARTUP
 
   -------         MODULE        MAIN
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:0008H         PUBLIC        dTerm
   D:0090H         PUBLIC        P1
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  12/25/2023  03:44:26  PAGE 3
+
+
   D:00A0H         PUBLIC        P2
   D:00B0H         PUBLIC        P3
   D:000CH         PUBLIC        iTerm
+  D:0010H         PUBLIC        period
   B:0090H.4       PUBLIC        motor1Backward
-  D:0010H         PUBLIC        pTerm
+  D:0012H         PUBLIC        pTerm
   B:0090H.2       PUBLIC        motor2Backward
   B:00A0H.5       PUBLIC        irSensor1
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  12/21/2023  00:47:27  PAGE 3
-
-
   B:00A0H.6       PUBLIC        irSensor2
   B:00A0H.7       PUBLIC        irSensor3
-  D:0014H         PUBLIC        irReadings
-  D:001AH         PUBLIC        previousError
-  C:0D22H         PUBLIC        _delay
-  C:0D79H         PUBLIC        main
-  D:001CH         PUBLIC        motor1newSpeed
-  D:001EH         PUBLIC        motor2newSpeed
+  D:0016H         PUBLIC        irReadings
+  D:001CH         PUBLIC        previousError
+  C:0D53H         PUBLIC        _delay
+  D:001EH         PUBLIC        OFF_Period
+  D:0020H         PUBLIC        ONperiod
+  C:0DE6H         PUBLIC        main
+  D:0022H         PUBLIC        motor1newSpeed
+  D:0024H         PUBLIC        motor2newSpeed
   C:0B80H         PUBLIC        pidCalculations
-  C:0D42H         PUBLIC        readIRSensors
-  D:0020H         PUBLIC        error
-  D:0022H         PUBLIC        output
-  D:0026H         PUBLIC        derivative
+  C:0DAFH         PUBLIC        readIRSensors
+  D:0026H         PUBLIC        error
+  D:0028H         PUBLIC        output
+  D:0089H         PUBLIC        TMOD
+  D:002CH         PUBLIC        derivative
   B:0090H.5       PUBLIC        motor1Forward
   B:0090H.3       PUBLIC        motor2Forward
   C:0ACBH         PUBLIC        calculateError
-  D:0028H         PUBLIC        kd
-  D:002CH         PUBLIC        ki
-  D:0030H         PUBLIC        motor1Speed
-  D:0032H         PUBLIC        motor2Speed
-  D:0034H         PUBLIC        integral
-  D:0036H         PUBLIC        kp
-  B:00B0H.2       PUBLIC        motor1pwmPin
-  B:00B0H.1       PUBLIC        motor2pwmPin
-  C:0C9FH         PUBLIC        changeMotorSpeed
+  D:008CH         PUBLIC        TH0
+  D:002EH         PUBLIC        kd
+  D:008AH         PUBLIC        TL0
+  C:0D1AH         PUBLIC        setTimer
+  D:0032H         PUBLIC        ki
+  D:0036H         PUBLIC        motor1Speed
+  D:0038H         PUBLIC        motor2Speed
+  D:003AH         PUBLIC        integral
+  D:003CH         PUBLIC        kp
+  D:0040H         PUBLIC        OFFperiod
+  D:0042H         PUBLIC        ON_Period
+  C:0CA1H         PUBLIC        changeMotorSpeed
+  C:0D73H         PUBLIC        _setPWM1
+  C:0D91H         PUBLIC        _setPWM2
   -------         PROC          _DELAY
   D:0006H         SYMBOL        time
   -------         DO            
   D:0004H         SYMBOL        i
   D:0002H         SYMBOL        j
   -------         ENDDO         
-  C:0D22H         LINE#         35
-  C:0D22H         LINE#         37
-  C:0D2CH         LINE#         38
-  C:0D41H         LINE#         39
+  C:0D53H         LINE#         41
+  C:0D53H         LINE#         43
+  C:0D5DH         LINE#         44
+  C:0D72H         LINE#         45
   -------         ENDPROC       _DELAY
   -------         PROC          READIRSENSORS
-  C:0D42H         LINE#         41
-  C:0D42H         LINE#         43
-  C:0D4BH         LINE#         44
-  C:0D54H         LINE#         45
-  C:0D5DH         LINE#         46
+  C:0DAFH         LINE#         47
+  C:0DAFH         LINE#         49
+  C:0DB8H         LINE#         50
+  C:0DC1H         LINE#         51
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  12/25/2023  03:44:26  PAGE 4
+
+
+  C:0DCAH         LINE#         52
   -------         ENDPROC       READIRSENSORS
   -------         PROC          CALCULATEERROR
-  C:0ACBH         LINE#         48
-  C:0ACBH         LINE#         50
-  C:0ADDH         LINE#         51
-  C:0AE2H         LINE#         52
-  C:0AF5H         LINE#         53
-  C:0AFAH         LINE#         54
-  C:0B0DH         LINE#         55
-  C:0B0EH         LINE#         56
-  C:0B22H         LINE#         57
-  C:0B24H         LINE#         58
-  C:0B38H         LINE#         59
-  C:0B3EH         LINE#         60
-  C:0B51H         LINE#         61
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  12/21/2023  00:47:27  PAGE 4
-
-
-  C:0B5BH         LINE#         62
-  C:0B61H         LINE#         63
-  C:0B62H         LINE#         64
-  C:0B68H         LINE#         65
-  C:0B68H         LINE#         66
-  C:0B7BH         LINE#         67
-  C:0B7FH         LINE#         68
-  C:0B7FH         LINE#         69
+  C:0ACBH         LINE#         54
+  C:0ACBH         LINE#         56
+  C:0ADDH         LINE#         57
+  C:0AE2H         LINE#         58
+  C:0AF5H         LINE#         59
+  C:0AFAH         LINE#         60
+  C:0B0DH         LINE#         61
+  C:0B0EH         LINE#         62
+  C:0B22H         LINE#         63
+  C:0B24H         LINE#         64
+  C:0B38H         LINE#         65
+  C:0B3EH         LINE#         66
+  C:0B51H         LINE#         67
+  C:0B5BH         LINE#         68
+  C:0B61H         LINE#         69
+  C:0B62H         LINE#         70
+  C:0B68H         LINE#         71
+  C:0B68H         LINE#         72
+  C:0B7BH         LINE#         73
+  C:0B7FH         LINE#         74
+  C:0B7FH         LINE#         75
   -------         ENDPROC       CALCULATEERROR
   -------         PROC          PIDCALCULATIONS
-  C:0B80H         LINE#         71
-  C:0B80H         LINE#         72
-  C:0B9BH         LINE#         73
-  C:0BA7H         LINE#         74
-  C:0BC0H         LINE#         75
-  C:0BCDH         LINE#         76
-  C:0BE6H         LINE#         77
-  C:0C0CH         LINE#         78
-  C:0C12H         LINE#         79
+  C:0B80H         LINE#         77
+  C:0B80H         LINE#         78
+  C:0B9BH         LINE#         79
+  C:0BA7H         LINE#         80
+  C:0BC1H         LINE#         81
+  C:0BCEH         LINE#         82
+  C:0BE8H         LINE#         83
+  C:0C0EH         LINE#         84
+  C:0C14H         LINE#         85
   -------         ENDPROC       PIDCALCULATIONS
   -------         PROC          CHANGEMOTORSPEED
-  C:0C9FH         LINE#         81
-  C:0C9FH         LINE#         83
-  C:0CB9H         LINE#         84
-  C:0CD3H         LINE#         86
-  C:0CEEH         LINE#         87
-  C:0D09H         LINE#         89
-  C:0D11H         LINE#         90
-  C:0D19H         LINE#         91
-  C:0D1BH         LINE#         92
-  C:0D1DH         LINE#         93
-  C:0D1FH         LINE#         94
-  C:0D21H         LINE#         95
+  C:0CA1H         LINE#         88
+  C:0CA1H         LINE#         90
+  C:0CBBH         LINE#         91
+  C:0CD5H         LINE#         93
+  C:0CEEH         LINE#         94
+  C:0D07H         LINE#         97
+  C:0D0AH         LINE#         98
+  C:0D11H         LINE#         100
+  C:0D13H         LINE#         101
+  C:0D15H         LINE#         102
+  C:0D17H         LINE#         103
+  C:0D19H         LINE#         106
   -------         ENDPROC       CHANGEMOTORSPEED
+  -------         PROC          _SETPWM1
+  D:0006H         SYMBOL        motor1newSpeed
+  C:0D73H         LINE#         108
+  C:0D73H         LINE#         109
+  C:0D79H         LINE#         110
+  C:0D84H         LINE#         111
+  C:0D90H         LINE#         112
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  12/25/2023  03:44:26  PAGE 5
+
+
+  -------         ENDPROC       _SETPWM1
+  -------         PROC          _SETPWM2
+  D:0006H         SYMBOL        motor2newSpeed
+  C:0D91H         LINE#         114
+  C:0D91H         LINE#         115
+  C:0D97H         LINE#         116
+  C:0DA2H         LINE#         117
+  C:0DAEH         LINE#         118
+  -------         ENDPROC       _SETPWM2
+  -------         PROC          SETTIMER
+  C:0D1AH         LINE#         120
+  C:0D1AH         LINE#         121
+  C:0D1DH         LINE#         122
+  C:0D28H         LINE#         123
+  C:0D28H         LINE#         124
+  C:0D2CH         LINE#         125
+  C:0D2FH         LINE#         126
+  C:0D31H         LINE#         128
+  C:0D31H         LINE#         129
+  C:0D35H         LINE#         130
+  C:0D38H         LINE#         131
+  C:0D38H         LINE#         133
+  C:0D43H         LINE#         134
+  C:0D43H         LINE#         135
+  C:0D47H         LINE#         136
+  C:0D4AH         LINE#         137
+  C:0D4BH         LINE#         139
+  C:0D4BH         LINE#         140
+  C:0D4FH         LINE#         141
+  C:0D52H         LINE#         142
+  C:0D52H         LINE#         144
+  -------         ENDPROC       SETTIMER
   -------         PROC          MAIN
-  C:0D79H         LINE#         97
-  C:0D79H         LINE#         98
-  C:0D79H         LINE#         99
-  C:0D7CH         LINE#         100
-  C:0D7FH         LINE#         101
-  C:0D82H         LINE#         102
-  C:0D85H         LINE#         103
-  C:0D8CH         LINE#         104
+  C:0DE6H         LINE#         146
+  C:0DE6H         LINE#         147
+  C:0DE6H         LINE#         148
+  C:0DE9H         LINE#         149
+  C:0DECH         LINE#         150
+  C:0DEFH         LINE#         151
+  C:0DF2H         LINE#         152
+  C:0DF9H         LINE#         153
   -------         ENDPROC       MAIN
   -------         ENDMOD        MAIN
 
@@ -239,11 +297,11 @@ SYMBOL TABLE OF MODULE:  .\Objects\linefollower (?C_STARTUP)
 
   -------         MODULE        ?C?FCAST
   C:0A08H         PUBLIC        ?C?FCASTC
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  12/21/2023  00:47:27  PAGE 5
-
-
   C:0A03H         PUBLIC        ?C?FCASTI
   C:09FEH         PUBLIC        ?C?FCASTL
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  12/25/2023  03:44:26  PAGE 6
+
+
   -------         ENDMOD        ?C?FCAST
 
   -------         MODULE        ?C?CASTF
@@ -254,9 +312,12 @@ SYMBOL TABLE OF MODULE:  .\Objects\linefollower (?C_STARTUP)
   C:0ABDH         PUBLIC        ?C?LNEG
   -------         ENDMOD        ?C?LNEG
 
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?SETTIMER?MAIN
+
 ******************************************************************************
-* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0245H BYTE (28%) *
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 02B2H BYTE (33%) *
 ******************************************************************************
 
-Program Size: data=59.0 xdata=0 code=1425
-LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
+Program Size: data=69.0 xdata=0 code=1534
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)

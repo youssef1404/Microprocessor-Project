@@ -1,4 +1,4 @@
 ".\Objects\STARTUP.obj",
 ".\Objects\main.obj" 
-TO ".\Objects\linefollower" 
-PRINT(".\Listings\linefollower.m51") RAMSIZE(256) 
+TO ".\Objects\LineFollower" 
+PRINT(".\Listings\LineFollower.m51") RAMSIZE(256) 
