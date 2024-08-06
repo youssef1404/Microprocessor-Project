@@ -1,0 +1,183 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              12/25/2023 03:44:26 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: O:\01. Programs\Keil\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Lis
+                    -tings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REG51.H>
+   2          //#include <AT89X51.H>
+   3          
+   4          typedef unsigned short int   uint8_t;
+   5          
+   6          uint8_t period, ON_Period, OFF_Period;
+   7          uint8_t ONperiod, OFFperiod;
+   8          float pTerm, iTerm, dTerm;
+   9          uint8_t error;
+  10          uint8_t previousError;
+  11          
+  12          float kp = 11; //11
+  13          float ki = 0;
+  14          float kd = 11; //11
+  15          
+  16          float output;
+  17          uint8_t integral, derivative;
+  18          
+  19          sbit irSensor1 = P2^5;  // IR sensor pins
+  20          sbit irSensor2 = P2^6;
+  21          sbit irSensor3 = P2^7;
+  22          
+  23          sbit motor1Forward = P1^5;
+  24          sbit motor1Backward = P1^4;
+  25          sbit motor1pwmPin = P3^2;
+  26          sbit motor2Forward = P1^3;
+  27          sbit motor2Backward = P1^2;
+  28          sbit motor2pwmPin = P3^1;
+  29          
+  30          uint8_t motor1newSpeed;
+  31          uint8_t motor2newSpeed;
+  32          uint8_t motor2Speed = 40; //Default 70
+  33          uint8_t motor1Speed = 40; //Default 120
+  34          
+  35          
+  36          uint8_t irReadings[3];
+  37          
+  38          void setPWM1(uint8_t motor1newSpeed); 
+  39          void setPWM2(uint8_t motor2newSpeed); 
+  40          
+  41          void delay(uint8_t time) {
+  42   1          uint8_t i, j;
+  43   1          for (i = 0; i < time; i++)
+  44   1              for (j = 0; j < 1275; j++);
+  45   1      }
+  46          
+  47          void readIRSensors() {
+  48   1          // Read the IR sensors and put the readings in irReadings array
+  49   1          irReadings[0] = irSensor1;
+  50   1          irReadings[1] = irSensor2;
+  51   1          irReadings[2] = irSensor3;
+  52   1      }
+  53          
+  54          void calculateError() {
+C51 COMPILER V9.60.7.0   MAIN                                                              12/25/2023 03:44:26 PAGE 2   
+
+  55   1          // Determine an error based on the readings
+  56   1          if (irReadings[0] && irReadings[1] && !irReadings[2]) {
+  57   2              error = 2;
+  58   2          } else if (irReadings[0] && !irReadings[1] && !irReadings[2]) {
+  59   2              error = 1;
+  60   2          } else if (irReadings[0] && !irReadings[1] && irReadings[2]) {
+  61   2              error = 0;
+  62   2          } else if (!irReadings[0] && !irReadings[1] && irReadings[2]) {
+  63   2              error = -1;
+  64   2          } else if (!irReadings[0] && irReadings[1] && irReadings[2]) {
+  65   2              error = -2;
+  66   2          } else if (irReadings[0] && irReadings[1] && irReadings[2]) {
+  67   2              if (previousError == -2) {
+  68   3                  error = -3;
+  69   3              } else {
+  70   3                  error = 3;
+  71   3              }
+  72   2          } else if (!irReadings[0] && !irReadings[1] && !irReadings[2]) {
+  73   2              error = 0;
+  74   2          }
+  75   1      }
+  76          
+  77          void pidCalculations() {
+  78   1          pTerm = kp * error;
+  79   1          integral += error;
+  80   1          iTerm = ki * integral;
+  81   1          derivative = error - previousError;
+  82   1          dTerm = kd * derivative;
+  83   1          output = pTerm + iTerm + dTerm;
+  84   1          previousError = error;
+  85   1      }
+  86          
+  87          
+  88          void changeMotorSpeed() {
+  89   1          // Change motor speed of both motors accordingly
+  90   1          motor2newSpeed = motor2Speed + output;
+  91   1          motor1newSpeed = motor1Speed - output;
+  92   1          // Constrain the new speed of motors to be between the range 0-255
+  93   1          motor2newSpeed = (motor2newSpeed > 255) ? 255 : motor2newSpeed;
+  94   1          motor1newSpeed = (motor1newSpeed > 255) ? 255 : motor1newSpeed;
+  95   1          // Set new speed, and run motors in the forward direction
+  96   1         
+  97   1          setPWM1(motor1newSpeed);
+  98   1          setPWM2(motor2newSpeed);
+  99   1          
+ 100   1          motor2Forward = 1;
+ 101   1          motor2Backward = 0;
+ 102   1          motor1Forward = 1;
+ 103   1          motor1Backward = 0;
+ 104   1          
+ 105   1          
+ 106   1      }
+ 107          
+ 108          void setPWM1(uint8_t motor1newSpeed) {
+ 109   1          period = 65535 - 256;  // FFFF - period
+ 110   1          ONperiod = 65535 - motor1newSpeed ;
+ 111   1          OFFperiod = period + ONperiod ; // 65535 - 256(period) + ontime
+ 112   1      }
+ 113          
+ 114          void setPWM2(uint8_t motor2newSpeed) {
+ 115   1          period = 65535 - 256;  // FFFF - period
+ 116   1          ONperiod = 65535 - motor2newSpeed ;
+C51 COMPILER V9.60.7.0   MAIN                                                              12/25/2023 03:44:26 PAGE 3   
+
+ 117   1          OFFperiod = period + ONperiod ; // 65535 - 256(period) + ontime
+ 118   1      }
+ 119          
+ 120          void setTimer() {
+ 121   1          TMOD = 0x01;
+                  TR0 = 1;
+ 122   1          if(motor1newSpeed > 1)
+ 123   1          {
+ 124   2            TH0 = (ON_Period >> 8);
+ 125   2            TL0 = ON_Period;
+ 126   2          } 
+ 127   1          else
+ 128   1          {
+ 129   2            TH0 = (OFF_Period >> 8);
+ 130   2            TL0 = OFF_Period;
+ 131   2          } 
+ 132   1        
+ 133   1          if(motor2newSpeed > 1)
+ 134   1          {
+ 135   2            TH0 = (ON_Period >> 8);
+ 136   2            TL0 = ON_Period;
+ 137   2          } 
+ 138   1          else
+ 139   1          {
+ 140   2            TH0 = (OFF_Period >> 8);
+ 141   2            TL0 = OFF_Period;
+ 142   2          } 
+ 143   1      
+ 144   1      }
+ 145          
+ 146          void main() {
+ 147   1          while (1) {
+ 148   2              readIRSensors();
+ 149   2              calculateError();
+ 150   2              pidCalculations();
+ 151   2              changeMotorSpeed();
+ 152   2              delay(100);  // Adjust the delay as needed
+ 153   2          }
+ 154   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    649    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     60    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
